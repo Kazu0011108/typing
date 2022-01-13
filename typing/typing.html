@@ -21,6 +21,13 @@
             font-weight: bold;
             color: black;
         }
+        span {
+            transition: all 300ms 0s ease;
+        }
+        .add-color {
+            color: #666;
+            font-size: 0.5em;
+        }
 
     </style>
 </head>
@@ -51,6 +58,8 @@
             'Waht it This?',
         ];// ←複数のテキストを格納する配列
 
+        let checkTexts = [];
+
         const createText = () => {
             const p = document.getElementById('text');
 
@@ -60,7 +69,7 @@
             p.textContent = '';
 
            //テキストを１文字ずつに分割してｐ要素に挿入するコード↓
-            textLists[rnd].split('').map(value => {
+            checkTexts = textLists[rnd].split('').map(value =>{
               
                 //span要素を生成する
                 const span = document.createElement('span'); 
@@ -70,18 +79,24 @@
 
                //span要素をｐ要素に追加していくコード↓
                p.appendChild(span);
+
+               //1文字ずつchecktextに格納していくコード↓
+               return span;
             })
 
         }; //　←ランダムなテキストを画面に表示させる
 
-        //createText関数を実行する。
-        createText();
-
-
-
-
         const keyDown = e => {
-            console.log(e.key);
+            if(e.key === checkTexts[0].textContent) {
+            //add-colorクラスを付与するコード↓
+            checkTexts[0].className = 'add-color';
+
+            //配列から1文字を削除するコード↓
+            checkTexts.shift();
+
+            //最後まで入力したら新しいテキストを用意するコード↓
+            if(!checkTexts.length) createText();
+            }
         }; //←キーイベント＆入力判定処理
 
         const rankCheck = rank => {}; //ランク判定とメッセージ生成処理
@@ -90,7 +105,7 @@
 
         const timar = ()=> {}; // ←タイマー処理
 
-        start.addEventListener('click', ()=>{
+        start.addEventListener('click', ()=> {
             createText();
             //キーボードのイベント処理するためのコード↓
             document.addEventListener('keydown', keyDown);
